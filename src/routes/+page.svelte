@@ -97,22 +97,25 @@
 	}
 
 	function spawnOrb(atPointer=false, px?:number, py?:number){
-		if(!world || !RAPIER) return;
-		if(bodies.length >= 24) return;
-		const rect = canvasEl.getBoundingClientRect();
-		const x = px ?? (atPointer ? rect.width/2 + (Math.random()-0.5)*80 : Math.random()*(rect.width-100)+50);
-		const y = py ?? (atPointer ? 60 : Math.random()*60+30);
-		const r = 14 + Math.random()*18;
-		const desc = RAPIER.RigidBodyDesc.dynamic().setTranslation(x, y).setLinearDamping(0.02).setAngularDamping(0.2);
-		const body = world.createRigidBody(desc);
-		const col = world.createCollider(RAPIER.ColliderDesc.ball(r).setRestitution(bounciness).setFriction(0.15).setMass(r*0.6), body);
-		bodies.push(body);
-		colliders.push(col);
-		radii.push(r);
-		hues.push( (paletteIdx*70 + bodies.length* 37 + r*4) % 360 );
-		orbCount = bodies.length;
-		// small pop sound
-		if(soundOn) pluck(Math.floor(Math.random()*7));
+		if(!world || !RAPIER) { console.warn('spawnOrb: world not ready'); return; }
+		if(!canvasEl) { console.warn('spawnOrb: canvas not ready'); return; }
+		if(bodies.length >= 24) { console.warn('spawnOrb: max reached'); return; }
+		try{
+			const rect = canvasEl.getBoundingClientRect();
+			const w = rect.width || canvasEl.clientWidth || 900;
+			const x = px ?? (atPointer ? w/2 + (Math.random()-0.5)*80 : Math.random()*(w-100)+50);
+			const y = py ?? (atPointer ? 60 : Math.random()*60+30);
+			const r = 14 + Math.random()*18;
+			const desc = RAPIER.RigidBodyDesc.dynamic().setTranslation(x, y).setLinearDamping(0.02).setAngularDamping(0.2);
+			const body = world.createRigidBody(desc);
+			const col = world.createCollider(RAPIER.ColliderDesc.ball(r).setRestitution(bounciness).setFriction(0.15).setMass(r*0.6), body);
+			bodies.push(body);
+			colliders.push(col);
+			radii.push(r);
+			hues.push( (paletteIdx*70 + bodies.length* 37 + r*4) % 360 );
+			orbCount = bodies.length;
+			if(soundOn) pluck(Math.floor(Math.random()*7));
+		}catch(e){ console.error('spawnOrb failed', e); }
 	}
 
 	function clearOrbs(){
