@@ -74,8 +74,8 @@
 	let bgCanvasEl: HTMLCanvasElement;
 	let ctx: CanvasRenderingContext2D | null = null;
 	let bgCtx: CanvasRenderingContext2D | null = null;
-	let world: any = null;
-	let RAPIER: any = null;
+	let world: any = $state(null);
+	let RAPIER: any = $state(null);
 	let bodies: any[] = [];
 	let colliders: any[] = [];
 	let radii: number[] = [];
