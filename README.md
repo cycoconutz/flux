@@ -4,8 +4,7 @@
 
 A flashy, highly-interactive physics arcade. Drag orbs to fling them, watch collisions become musical notes and paint splats.
 
-Live: **https://cycoconutz.github.io/flux/** (after `git push`)
-Repo: **https://github.com/cycoconutz/flux**
+Live: **https://cycoconutz.github.io/flux/**
 
 Catalog entry: appears as `06 — Arcade — 2026` on https://cycoconutz.github.io/portfolio-tabs
 
@@ -69,54 +68,7 @@ Node 20+ required; Vite 6 pinned for Node 22.7 compat.
 
 ## Deploy to GitHub Pages
 
-1. Create repo `cycoconutz/flux` (public).
-2. Push this folder:
-
-```bash
-git init
-git add .
-git commit -m "feat: FLUX kinetic arcade — Svelte 5 + Rapier + Web Audio"
-git branch -M main
-git remote add origin https://github.com/cycoconutz/flux.git
-git push -u origin main
-```
-
-3. GitHub → Settings → Pages → Source: **GitHub Actions** (workflow at `.github/workflows/deploy.yml` handles it).
-4. Wait for Actions green, then open https://cycoconutz.github.io/flux/
-
-> The build uses `paths.base = '/flux'` when `NODE_ENV=production` (via `svelte.config.js:13`). Local `npm run preview` after `npm run build` serves with base already baked; GH Pages serves `build/` correctly.
-
----
-
-## Portfolio-tabs integration
-
-A patch is ready in your local clone at `C:\Users\cyco\AppData\Local\Temp\opencode\portfolio-tabs-clone` (4 files + shot).
-
-To apply to your real `portfolio-tabs` repo:
-
-```bash
-git clone https://github.com/cycoconutz/portfolio-tabs.git
-cd portfolio-tabs
-# copy src/data/projects.ts, src/theme/themes.css, src/transitions/wipes.ts, src/index.css patches
-# and src/assets/shots/flux.png (14 kB placeholder — replace with a real screenshot from live FLUX if you want)
-npm install
-npx tsc -b && npx vite build   # verifies 6 tiles
-git add .
-git commit -m "feat: add FLUX arcade (06, Svelte/Rapier/Web Audio, shatter wipe)"
-git push
-```
-
-Full diff saved at `portfolio-tabs-flux.patch` (ask me to emit it).
-
----
-
-## Replacing the shot
-
-Current `src/assets/shots/flux.png` is a generated placeholder. For a real shot:
-
-1. Open live FLUX, throw a few orbs, set palette to `Foil`.
-2. Screenshot 1280×720 (Chrome DevTools device frame off).
-3. Save as `src/assets/shots/flux.png` and rebuild portfolio-tabs.
+Deploys are automatic: a push to `main` triggers the workflow at `.github/workflows/deploy.yml`, which builds the site and publishes it to GitHub Pages. A production build sets the `/flux` base path (see `svelte.config.js`), so asset URLs resolve correctly under the Pages project subdirectory. The site is served at https://cycoconutz.github.io/flux/.
 
 ---
 
